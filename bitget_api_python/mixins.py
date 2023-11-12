@@ -6,6 +6,17 @@ Basic building blocks for Clients classes
 class AccountMixin:
     """
     Account metods
+
+    Methods:
+        - get_account_info -> Response
+        - get_account_assets -> Response
+        - get_account_bills -> Response
+        - transfer_assets -> Response
+        - get_transfer_records -> Response
+        - withdraw_coins -> Response
+        - get_deposit_address -> Response
+        - get_deposit_records -> Response
+        - get_withdrawal_records -> Response
     """
     def get_account_info(self):
         """
