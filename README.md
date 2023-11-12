@@ -7,7 +7,13 @@ The `bitget-api-python` library is designed for interacting with the API endpoin
 You can install this library using pip:
 
 ```bash
-pip install bitget-api-python
+pip install git+https://github.com/airyou-code/bitget-api-python.git
+```
+
+Uninstall:
+
+```bash
+pip uninstall bitget_api_python 
 ```
 
 ## Introduction
@@ -49,4 +55,4 @@ You can replace `/v1/trade/balance` with the desired endpoint and provide any re
 This library is distributed under the [GNU General Public License (GPL) version 3](LICENSE).
 ## Contributing
 
-Contributions are welcome! If you have any suggestions, bug reports, or pull requests, please open an issue or submit a pull request on the [GitHub repository](https://github.com/).
+Contributions are welcome! If you have any suggestions, bug reports, or pull requests, please open an issue or submit a pull request on the [GitHub repository](https://github.com/airyou-code/bitget-api-python).
