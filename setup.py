@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='bitget-api-python',
+    name='bitget_api_python',
     version='0.0.0',
     packages=find_packages(),
     install_requires=[],
