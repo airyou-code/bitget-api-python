@@ -20,35 +20,41 @@ pip uninstall bitget_api_python
 
 BitGet is a cryptocurrency exchange platform that offers a wide range of trading features and services. This library allows you to access and utilize the BitGet API to automate trading operations, retrieve market data, and manage your account.
 
-## Authentication
 
-The library provides an authentication class, `BitgetAuth`, that you can use to create an authenticated session with the BitGet API. Here's how to use it:
+
+## Usage
+
+To use the BitGet API Python client, you need to initialize a `Client` instance with your API credentials. The `Client` class includes mixins for trading and account management
+
+Mixins:
+ - `AccountMixin` provides methods for account management, such as getting account information, balances, and transaction history. ([Docs](docs/accountmixin.md))
+
+ - ~~`MarketMixin` provides methods for retrieving market data, such as ticker information, order book, and recent trades.~~ ***not released**
+
+ - ~~`TradeMixin` provides methods for trading operations, such as placing limit and market orders, canceling orders, and getting order status.~~ ***not released**
+
+ <!-- - `BitgetAuth` class is used to sign requests with your API credentials. This class is used internally by the
+
+ - `Client` class, and you do not need to use it directly. -->
+
+## Examples
+
+Here is an example of how to use the `Client` class to get account information:
 
 ```python
-from bitget_api_python import BitgetAuth
+from bitget_api_python import BitgetAuth, Client
 
-# Replace with your BitGet API credentials
-api_key = 'Your API Key'
-api_secret = 'Your API Secret'
-api_passphrase = 'Your API Passphrase'
+# Initialize the client with your API credentials
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
+api_passphrase = 'your_api_passphrase'
+client = Client(api_key, api_secret, api_passphrase)
 
-# Create an instance of the BitgetAuth class
-auth = BitgetAuth(api_key, api_secret, api_passphrase)
+# Account-related methods are now available through the client instance.
+# For example, you can get account information like this:
+account_info = client.get_account_info()
+print(account_info)
 ```
-
-The `BitgetAuth` class allows you to securely sign requests with your API credentials, ensuring that your account's access to BitGet's resources is authenticated and authorized.
-
-## Making Requests
-
-Once you have an authenticated session with the BitGet API, you can use the `get` and `post` methods to make requests to various API endpoints. Here's how to make a GET request as an example:
-
-```python
-# Example GET request to the BitGet API
-response = auth.get('/v1/trade/balance')
-print(response.json())
-```
-
-You can replace `/v1/trade/balance` with the desired endpoint and provide any required parameters or data for your specific API call.
 
 ## License
 
@@ -56,3 +62,7 @@ This library is distributed under the [GNU General Public License (GPL) version 
 ## Contributing
 
 Contributions are welcome! If you have any suggestions, bug reports, or pull requests, please open an issue or submit a pull request on the [GitHub repository](https://github.com/airyou-code/bitget-api-python).
+
+Please note that this is a beta release, and we welcome your feedback and contributions. If you encounter any issues or have suggestions for improvement, please [open an issue](https://github.com/airyou-code/bitget-api-python/issues) on our GitHub repository.
+
+Thank you for using the BitGet API Python client library!
