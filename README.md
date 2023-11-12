@@ -24,6 +24,8 @@ BitGet is a cryptocurrency exchange platform that offers a wide range of trading
 
 ## Usage
 
+[BitGet Quick Start](https://www.bitget.com/api-doc/common/quick-start)
+
 To use the BitGet API Python client, you need to initialize a `Client` instance with your API credentials. The `Client` class includes mixins for trading and account management
 
 Mixins:
