@@ -1,3 +1,5 @@
+from typing import Optional
+from requests import Response
 """
 Basic building blocks for Clients classes
 """
@@ -15,7 +17,7 @@ class MarketMixin:
         - get_candlestick_data -> Response
     """
 
-    def get_symbol_info(self, symbol=None):
+    def get_symbol_info(self, symbol: Optional[str] = None) -> Response:
         """
         Get spot trading pair information, supporting both individual and full queries.
 
@@ -65,7 +67,7 @@ class MarketMixin:
 
         return self.get(endpoint, params=params)
 
-    def get_ticker_info(self, symbol=None):
+    def get_ticker_info(self, symbol: Optional[str] = None) -> Response:
         """
         Get ticker information, supporting both single and batch queries.
 
@@ -115,7 +117,7 @@ class MarketMixin:
 
         return self.get(endpoint, params=params)
 
-    def get_merge_depth(self, symbol, precision="scale0", limit="100"):
+    def get_merge_depth(self, symbol: str, precision: str = "scale0", limit: str = "100") -> Response:
         """
         Get merge depth.
 
@@ -162,7 +164,7 @@ class MarketMixin:
         params = {"symbol": symbol, "precision": precision, "limit": limit}
         return self.get(endpoint, params=params)
 
-    def get_orderbook_depth(self, symbol, type="step0", limit="150"):
+    def get_orderbook_depth(self, symbol: str, type: str = "step0", limit: str = "150") -> Response:
         """
         Get order book depth.
 
@@ -204,8 +206,13 @@ class MarketMixin:
         return self.get(endpoint, params=params)
 
     def get_candlestick_data(
-        self, symbol, granularity, startTime=None, endTime=None, limit="100"
-    ):
+        self,
+        symbol: str,
+        granularity: str,
+        startTime: Optional[str] = None,
+        endTime: Optional[str] = None,
+        limit: str = "100"
+    ) -> Response:
         """
         Get candlestick data.
 
@@ -265,7 +272,13 @@ class MarketMixin:
 
         return self.get(endpoint, params=params)
 
-    def get_history_candlestick_data(self, symbol, granularity, endTime, limit="100"):
+    def get_history_candlestick_data(
+        self,
+        symbol: str,
+        granularity: str,
+        endTime: str,
+        limit: str = "100"
+    ) -> Response:
         """
         Get historical candlestick data.
 
@@ -324,7 +337,7 @@ class MarketMixin:
         }
         return self.get(endpoint, params=params)
     
-    def get_recent_trades(self, symbol, limit="100"):
+    def get_recent_trades(self, symbol: str, limit: str = "100") -> Response:
         """
         Get recent trades.
 
@@ -379,7 +392,14 @@ class MarketMixin:
         }
         return self.get(endpoint, params=params)
 
-    def get_market_trades(self, symbol, limit="500", idLessThan=None, startTime=None, endTime=None):
+    def get_market_trades(
+        self,
+        symbol: str,
+        limit: str = "500",
+        idLessThan: Optional[str] = None,
+        startTime: Optional[str] = None,
+        endTime: Optional[str] = None
+    ) -> Response:
         """
         Get market trades.
 
@@ -461,7 +481,7 @@ class AccountMixin:
         - get_deposit_records -> Response
         - get_withdrawal_records -> Response
     """
-    def get_account_info(self):
+    def get_account_info(self) -> Response:
         """
         Get account information.
 
@@ -479,7 +499,11 @@ class AccountMixin:
         endpoint = "/api/v2/spot/account/info"
         return self.get(endpoint)
 
-    def get_account_assets(self, coin=None, asset_type="hold_only"):
+    def get_account_assets(
+        self,
+        coin: Optional[str] = None,
+        asset_type: str = "hold_only"
+    ) -> Response:
         """
         Get account assets.
 
@@ -510,14 +534,14 @@ class AccountMixin:
 
     def get_account_bills(
         self,
-        coin=None,
-        group_type=None,
-        business_type=None,
-        start_time=None,
-        end_time=None,
-        limit=100,
-        id_less_than=None,
-    ):
+        coin: Optional[str] = None,
+        group_type: Optional[str] = None,
+        business_type: Optional[str] = None,
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+        limit: int = 100,
+        id_less_than: Optional[str] = None
+    ) -> Response:
         """
         Get account bills.
 
@@ -560,8 +584,15 @@ class AccountMixin:
 
         return self.get(endpoint, params=params)
 
-    def transfer_assets(self, from_type, to_type, amount, coin,
-                        symbol=None, client_oid=None):
+    def transfer_assets(
+        self,
+        from_type: str,
+        to_type: str,
+        amount: str,
+        coin: str,
+        symbol: Optional[str] = None,
+        client_oid: Optional[str] = None
+    ) -> Response:
         """
         Transfer assets between different productType accounts.
 
@@ -600,14 +631,14 @@ class AccountMixin:
 
     def get_transfer_records(
         self,
-        coin,
-        from_type,
-        start_time=None,
-        end_time=None,
-        client_oid=None,
-        limit=100,
-        id_less_than=None,
-    ):
+        coin: str,
+        from_type: str,
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+        client_oid: Optional[str] = None,
+        limit: int = 100,
+        id_less_than: Optional[str] = None
+    ) -> Response:
         """
         Get transfer records.
 
@@ -651,17 +682,17 @@ class AccountMixin:
 
     def withdraw_coins(
         self,
-        coin,
-        transfer_type,
-        address,
-        size,
-        chain=None,
-        inner_to_type=None,
-        area_code=None,
-        tag=None,
-        remark=None,
-        client_oid=None,
-    ):
+        coin: str,
+        transfer_type: str,
+        address: str,
+        size: str,
+        chain: Optional[str] = None,
+        inner_to_type: Optional[str] = None,
+        area_code: Optional[str] = None,
+        tag: Optional[str] = None,
+        remark: Optional[str] = None,
+        client_oid: Optional[str] = None
+    ) -> Response:
         """
         Withdraw coins, including on-chain withdrawals and internal transfers.
 
@@ -711,7 +742,11 @@ class AccountMixin:
 
         return self.post(endpoint, data=data)
 
-    def get_deposit_address(self, coin, chain=None):
+    def get_deposit_address(
+        self,
+        coin: str,
+        chain: Optional[str] = None
+    ) -> Response:
         """
         Get deposit address.
 
@@ -735,9 +770,15 @@ class AccountMixin:
 
         return self.get(endpoint, params=params)
 
-    def get_deposit_records(self, start_time, end_time,
-                            coin=None, order_id=None,
-                            id_less_than=None, limit=20):
+    def get_deposit_records(
+        self,
+        start_time: str,
+        end_time: str,
+        coin: Optional[str] = None,
+        order_id: Optional[str] = None,
+        id_less_than: Optional[str] = None,
+        limit: int = 20
+    ) -> Response:
         """
         Get deposit records.
 
@@ -778,9 +819,16 @@ class AccountMixin:
 
         return self.get(endpoint, params=params)
 
-    def get_withdrawal_records(self, start_time, end_time,
-                               coin=None, client_oid=None,
-                               id_less_than=None, order_id=None, limit=20):
+    def get_withdrawal_records(
+        self,
+        start_time: str,
+        end_time: str,
+        coin: Optional[str] = None,
+        client_oid: Optional[str] = None,
+        id_less_than: Optional[str] = None,
+        order_id: Optional[str] = None,
+        limit: int = 20
+    ) -> Response:
         """
         Get withdrawal records.
 
