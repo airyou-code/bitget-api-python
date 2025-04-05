@@ -3,6 +3,449 @@ Basic building blocks for Clients classes
 """
 
 
+class MarketMixin:
+    """
+    Market methods
+
+    Methods:
+        - get_symbol_info -> Response
+        - get_ticker_info -> Response
+        - get_merge_depth -> Response
+        - get_orderbook_depth -> Response
+        - get_candlestick_data -> Response
+    """
+
+    def get_symbol_info(self, symbol=None):
+        """
+        Get spot trading pair information, supporting both individual and full queries.
+
+        docs:
+            - https://www.bitget.com/api-doc/spot/public/symbols
+        HTTP Request:
+            GET /api/v2/spot/public/symbols
+
+        Parameters:
+            - symbol (str, optional): Trading pair name, e.g. BTCUSDT.
+              If omitted, returns information for all trading pairs.
+
+        Returns:
+            A dictionary with trading pair information.
+
+        Returns example:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695808949356,
+                "data": [
+                    {
+                        "symbol": "BTCUSDT",
+                        "baseCoin": "BTC",
+                        "quoteCoin": "USDT",
+                        "minTradeAmount": "0.0001",
+                        "maxTradeAmount": "10000",
+                        "takerFeeRate": "0.001",
+                        "makerFeeRate": "0.001",
+                        "pricePrecision": "4",
+                        "quantityPrecision": "8",
+                        "quotePrecision": "4",
+                        "minTradeUSDT": "5",
+                        "status": "online",
+                        "buyLimitPriceRatio": "0.05",
+                        "sellLimitPriceRatio": "0.05",
+                        "orderQuantity": "100",
+                        "areaSymbol": "no"
+                    }
+                ]
+            }
+        """
+        endpoint = "/api/v2/spot/public/symbols"
+        params = {}
+        if symbol:
+            params["symbol"] = symbol
+
+        return self.get(endpoint, params=params)
+
+    def get_ticker_info(self, symbol=None):
+        """
+        Get ticker information, supporting both single and batch queries.
+
+        docs:
+            - https://www.bitget.com/api-doc/spot/market/tickers
+        HTTP Request:
+            GET /api/v2/spot/market/tickers
+
+        Parameters:
+            - symbol (str, optional): Trading pair name, e.g. BTCUSDT.
+              If omitted, returns ticker information for all trading pairs.
+
+        Returns:
+            A dictionary with ticker information.
+
+        Returns example:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695808949356,
+                "data": [
+                    {
+                        "symbol": "BTCUSDT",
+                        "high24h": "37775.65",
+                        "open": "35134.2",
+                        "low24h": "34413.1",
+                        "lastPr": "34413.1",
+                        "quoteVolume": "0",
+                        "baseVolume": "0",
+                        "usdtVolume": "0",
+                        "bidPr": "0",
+                        "askPr": "0",
+                        "bidSz": "0.0663",
+                        "askSz": "0.0119",
+                        "openUtc": "23856.72",
+                        "ts": "1625125755277",
+                        "changeUtc24h": "0.00301",
+                        "change24h": "0.00069"
+                    }
+                ]
+            }
+        """
+        endpoint = "/api/v2/spot/market/tickers"
+        params = {}
+        if symbol:
+            params["symbol"] = symbol
+
+        return self.get(endpoint, params=params)
+
+    def get_merge_depth(self, symbol, precision="scale0", limit="100"):
+        """
+        Get merge depth.
+
+        docs:
+            - https://www.bitget.com/api-doc/spot/market/merge-depth
+        HTTP Request:
+            GET /api/v2/spot/market/merge-depth
+
+        Parameters:
+            - symbol (str, required): Trading pair, e.g. BTCUSDT.
+            - precision (str, optional): Price precision for cumulative depth.
+              Options: scale0, scale1, scale2, scale3. Default is "scale0" (without merging).
+            - limit (str, optional): Limit parameter. Default is "100". Options include: 1, 5, 15, 50, max.
+
+        Returns:
+            A dictionary with merge depth data.
+
+        Returns example:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695808949356,
+                "data": {
+                    "asks": [
+                        ["38084.5", "0.0039"],
+                        ["38085.7", "0.0018"],
+                        ["38086.7", "0.0310"],
+                        ["38088.2", "0.5303"]
+                    ],
+                    "bids": [
+                        ["38073.7", "0.4993"],
+                        ["38073.4", "0.4500"],
+                        ["38073.3", "0.1179"],
+                        ["38071.5", "0.2162"]
+                    ],
+                    "ts": "1622102974025",
+                    "scale": "0.1",
+                    "precision": "scale0",
+                    "isMaxPrecision": "YES"
+                }
+            }
+        """
+        endpoint = "/api/v2/spot/market/merge-depth"
+        params = {"symbol": symbol, "precision": precision, "limit": limit}
+        return self.get(endpoint, params=params)
+
+    def get_orderbook_depth(self, symbol, type="step0", limit="150"):
+        """
+        Get order book depth.
+
+        docs:
+            - https://www.bitget.com/api-doc/spot/market/orderbook
+        HTTP Request:
+            GET /api/v2/spot/market/orderbook
+
+        Parameters:
+            - symbol (str, required): Trading pair, e.g. BTCUSDT.
+            - type (str, optional): Type of depth. Default is "step0".
+              Options: step0, step1, step2, step3, step4, step5.
+            - limit (str, optional): Number of entries to return.
+              Default is "150" (maximum 150).
+
+        Returns:
+            A dictionary with order book depth data.
+
+        Returns example:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1698303884579,
+                "data": {
+                    "asks": [
+                        ["34567.15", "0.0131"],
+                        ["34567.25", "0.0144"]
+                    ],
+                    "bids": [
+                        ["34567", "0.2917"],
+                        ["34566.85", "0.0145"]
+                    ],
+                    "ts": "1698303884584"
+                }
+            }
+        """
+        endpoint = "/api/v2/spot/market/orderbook"
+        params = {"symbol": symbol, "type": type, "limit": limit}
+        return self.get(endpoint, params=params)
+
+    def get_candlestick_data(
+        self, symbol, granularity, startTime=None, endTime=None, limit="100"
+    ):
+        """
+        Get candlestick data.
+
+        docs:
+            - https://www.bitget.com/api-doc/spot/market/candles
+        HTTP Request:
+            GET /api/v2/spot/market/candles
+
+        Parameters:
+            - symbol (str, required): Trading pair, e.g. BTCUSDT.
+            - granularity (str, required): Time interval for candlesticks.
+              Examples: 1min, 3min, 5min, 15min, 30min, 1h, 4h, 6h, 12h, 1day, 3day, 1week, 1M, etc.
+            - startTime (str, optional): Start time of the interval (Unix timestamp in milliseconds).
+            - endTime (str, optional): End time of the interval (Unix timestamp in milliseconds).
+            - limit (str, optional): Number of data entries to return. Default "100", maximum "1000".
+
+        Returns:
+            A dictionary containing candlestick data as a list of lists.
+            Each nested list contains:
+                [timestamp, open, high, low, close, base volume, USDT volume, quote volume]
+
+        Example return value:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695800278693,
+                "data": [
+                    [
+                        "1656604800000",
+                        "37834.5",
+                        "37849.5",
+                        "37773.5",
+                        "37773.5",
+                        "428.3462",
+                        "16198849.1079",
+                        "16198849.1079"
+                    ],
+                    [
+                        "1656604860000",
+                        "37834.5",
+                        "37850.0",
+                        "37775.0",
+                        "37780.0",
+                        "430.0000",
+                        "16200000.0000",
+                        "16200000.0000"
+                    ]
+                ]
+            }
+        """
+        endpoint = "/api/v2/spot/market/candles"
+        params = {"symbol": symbol, "granularity": granularity, "limit": limit}
+        if startTime:
+            params["startTime"] = startTime
+        if endTime:
+            params["endTime"] = endTime
+
+        return self.get(endpoint, params=params)
+
+    def get_history_candlestick_data(self, symbol, granularity, endTime, limit="100"):
+        """
+        Get historical candlestick data.
+
+        Docs:
+            - https://www.bitget.com/api-doc/spot/market/history-candles
+        HTTP Request:
+            GET /api/v2/spot/market/history-candles
+
+        Parameters:
+            symbol (str): Trading pair, e.g. "BTCUSDT".
+            granularity (str): Time interval for candlesticks. Examples: "1min", "3min", "5min", "15min", "30min", "1h", etc.
+            endTime (str): End time for the candlestick data (Unix timestamp in milliseconds).
+            limit (str, optional): Number of data points to return. Default is "100", maximum is "200".
+
+        Returns:
+            dict: A dictionary containing historical candlestick data as a list of lists.
+                Each inner list includes:
+                [timestamp, open, high, low, close, base volume, USDT volume, quote volume].
+
+        Example return:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695799900330,
+                "data": [
+                    [
+                        "1646064000000",
+                        "43500.8",
+                        "48207.2",
+                        "38516",
+                        "46451.9",
+                        "2581.4668",
+                        "118062073.82644",
+                        "118062073.82644"
+                    ],
+                    [
+                        "1648742400000",
+                        "46451.9",
+                        "55199.6",
+                        "15522.1",
+                        "38892.5",
+                        "42331329.5473",
+                        "1726993402150.991724",
+                        "1726993402150.991724"
+                    ]
+                    // ... more candlesticks
+                ]
+            }
+        """
+        endpoint = "/api/v2/spot/market/history-candles"
+        params = {
+            "symbol": symbol,
+            "granularity": granularity,
+            "endTime": endTime,
+            "limit": limit
+        }
+        return self.get(endpoint, params=params)
+    
+    def get_recent_trades(self, symbol, limit="100"):
+        """
+        Get recent trades.
+
+        Docs:
+            - https://www.bitget.com/api-doc/spot/market/fills
+        HTTP Request:
+            GET /api/v2/spot/market/fills
+
+        Parameters:
+            symbol (str): Trading pair name, e.g. "BTCUSDT".
+            limit (str, optional): Number of trades to return. Default is "100", maximum is "500".
+
+        Returns:
+            dict: A dictionary containing recent trades data.
+                Each trade includes:
+                - symbol (str): Trading pair.
+                - tradeId (str): Order ID.
+                - side (str): Direction ("buy" or "sell").
+                - price (str): Order price.
+                - size (str): Filled quantity.
+                - ts (str): Transaction time (Unix timestamp in milliseconds).
+
+        Example return:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695808949356,
+                "data": [
+                    {
+                        "symbol": "BFTUSDT",
+                        "tradeId": "1",
+                        "side": "buy",
+                        "price": "2.38735",
+                        "size": "2470.6224",
+                        "ts": "1622097282536"
+                    },
+                    {
+                        "symbol": "BFTUSDT",
+                        "tradeId": "2",
+                        "side": "sell",
+                        "price": "2.38649",
+                        "size": "3239.7976",
+                        "ts": "1622097280642"
+                    }
+                ]
+            }
+        """
+        endpoint = "/api/v2/spot/market/fills"
+        params = {
+            "symbol": symbol,
+            "limit": limit
+        }
+        return self.get(endpoint, params=params)
+
+    def get_market_trades(self, symbol, limit="500", idLessThan=None, startTime=None, endTime=None):
+        """
+        Get market trades.
+
+        Docs:
+            - https://www.bitget.com/api-doc/spot/market/fills-history
+        HTTP Request:
+            GET /api/v2/spot/market/fills-history
+
+        Parameters:
+            symbol (str): Trading pair name, e.g. "BTCUSDT".
+            limit (str, optional): Number of data returned. Default is "500", maximum is "1000".
+            idLessThan (str, optional): Order ID; returns records with tradeId less than the specified value.
+            startTime (str, optional): Start time (Unix millisecond timestamp, e.g. "1690196141868").
+            endTime (str, optional): End time (Unix millisecond timestamp, e.g. "1690196141868"). 
+                                    startTime and endTime should be within 7 days.
+
+        Returns:
+            dict: A dictionary containing market trades data.
+                Each trade includes:
+                    - symbol (str): Trading pair.
+                    - tradeId (str): Order ID.
+                    - side (str): Direction ("buy" or "sell").
+                    - price (str): Order price.
+                    - size (str): Filled quantity.
+                    - ts (str): Transaction time (Unix millisecond timestamp).
+
+        Example return:
+            {
+                "code": "00000",
+                "msg": "success",
+                "requestTime": 1695808949356,
+                "data": [
+                    {
+                        "symbol": "BTCUSDT",
+                        "tradeId": "1",
+                        "side": "buy",
+                        "price": "2.38735",
+                        "size": "2470.6224",
+                        "ts": "1622097282536"
+                    },
+                    {
+                        "symbol": "BFTUSDT",
+                        "tradeId": "2",
+                        "side": "sell",
+                        "price": "2.38649",
+                        "size": "3239.7976",
+                        "ts": "1622097280642"
+                    }
+                ]
+            }
+        """
+        endpoint = "/api/v2/spot/market/fills-history"
+        params = {
+            "symbol": symbol,
+            "limit": limit
+        }
+        if idLessThan:
+            params["idLessThan"] = idLessThan
+        if startTime:
+            params["startTime"] = startTime
+        if endTime:
+            params["endTime"] = endTime
+
+        return self.get(endpoint, params=params)
+
+
 class AccountMixin:
     """
     Account metods
