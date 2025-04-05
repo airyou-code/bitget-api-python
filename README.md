@@ -31,7 +31,7 @@ To use the BitGet API Python client, you need to initialize a `Client` instance 
 Mixins:
  - `AccountMixin` provides methods for account management, such as getting account information, balances, and transaction history. ([Docs](docs/accountmixin.md))
 
- - ~~`MarketMixin` provides methods for retrieving market data, such as ticker information, order book, and recent trades.~~ ***not released**
+ - `MarketMixin` provides methods for retrieving market data, such as ticker information, order book, and recent trades. ([Docs](docs/marketmixin.md))
 
  - ~~`TradeMixin` provides methods for trading operations, such as placing limit and market orders, canceling orders, and getting order status.~~ ***not released**
 
